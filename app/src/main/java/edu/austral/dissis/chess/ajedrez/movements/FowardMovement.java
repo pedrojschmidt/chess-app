@@ -15,7 +15,7 @@ public class FowardMovement implements Movement {
         return maxAmount;
     }
 
-    public boolean areFoward(MyPosition origin, MyPosition destination){
+    public boolean areFowardWhite(MyPosition origin, MyPosition destination){
         boolean foward = false;
         int originX = origin.getPositionX();
         int originY = origin.getPositionY();

@@ -47,4 +47,8 @@ public class Transform {
     public Move transformMovement(){
         return null;
     }
+
+    public GameOver transformGameOver(Color color){
+        return null;
+    }
 }

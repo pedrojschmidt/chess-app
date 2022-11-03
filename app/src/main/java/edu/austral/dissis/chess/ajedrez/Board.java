@@ -17,15 +17,24 @@ public class Board {
     private int ySize;
     private Color turn;
 
-    public Board(List<MyPosition> myPositions, List<Piece> pieces, List<Player> players) {
+    public Board(List<MyPosition> myPositions, List<Piece> pieces) {
         this.myPositions = myPositions;
         this.pieces = pieces;
-        this.players = players;
         isOver = false;
         fillEmptyAndOccupiedPositions(pieces, myPositions);
         xSize = checkXSize();
         ySize = checkYSize();
         turn = Color.WHITE;
+        this.players = fillPlayers();
+    }
+
+    private List<Player> fillPlayers(){
+        List<Player> players = new ArrayList<>();
+        Player playerBlack = new Player("black", getPiecesByColor(Color.BLACK), false);
+        Player playerWhite = new Player("white", getPiecesByColor(Color.WHITE), true);
+        players.add(playerWhite);
+        players.add(playerBlack);
+        return players;
     }
 
     private int checkXSize(){

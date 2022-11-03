@@ -126,27 +126,27 @@ public class Pawn implements Piece {
         for(MyPosition myPositionAux : posiblePositionsAuxes) {
             if (color == Color.WHITE) {
                 if (!hasMoved) {
-                    if (firstMovement.areFowardWhite(this.position, positionAux)) {
-                        if (!ocupiedPositions.contains(positionAux)) {
-                            foward.add(positionAux);
+                    if (firstMovement.areFowardWhite(this.myPosition, myPositionAux)) {
+                        if (!ocupiedMyPositions.contains(myPositionAux)) {
+                            foward.add(myPositionAux);
                         } else {
                             break;
                         }
                     }
-                } else if (anyMovement.areFowardWhite(this.position, positionAux)) {
-                    foward.add(positionAux);
+                } else if (anyMovement.areFowardWhite(this.myPosition, myPositionAux)) {
+                    foward.add(myPositionAux);
                 }
             } else {
                 if (!hasMoved) {
-                    if (firstMovement.areFowardBlack(this.position, positionAux)) {
-                        if (!ocupiedPositions.contains(positionAux)) {
-                            foward.add(positionAux);
+                    if (firstMovement.areFowardBlack(this.myPosition, myPositionAux)) {
+                        if (!ocupiedMyPositions.contains(myPositionAux)) {
+                            foward.add(myPositionAux);
                         } else {
                             break;
                         }
                     }
-                } else if (anyMovement.areFowardBlack(this.position, positionAux)) {
-                    foward.add(positionAux);
+                } else if (anyMovement.areFowardBlack(this.myPosition, myPositionAux)) {
+                    foward.add(myPositionAux);
                 }
             }
         }
