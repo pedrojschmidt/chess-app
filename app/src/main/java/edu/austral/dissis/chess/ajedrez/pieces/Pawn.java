@@ -11,7 +11,7 @@ import java.util.List;
 public class Pawn implements Piece {
 
     private MyPosition myPosition;
-    private final String name = "Pawn";
+    private String name = "pawn";
     private Color color;
     private boolean alive;
     private boolean alreadyMoved;
@@ -95,6 +95,7 @@ public class Pawn implements Piece {
                 setPosition(myPosition);
                 if (myPosition.getPositionY() == 8) {
                     setQueen(true);
+                    setName("queen");
                 }
             }
             return aux;
@@ -425,5 +426,9 @@ public class Pawn implements Piece {
 
     public void setQueen(boolean queen) {
         isQueen = queen;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

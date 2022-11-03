@@ -12,7 +12,10 @@ import java.util.List;
 public class Transform {
 
     public Position transformPosition(MyPosition myPosition){
-        return new Position(myPosition.getPositionY(), myPosition.getPositionX());
+        return new Position(myPosition.getPositionX(), myPosition.getPositionY());
+    }
+    public MyPosition transformMyPosition(Position position){
+        return new MyPosition(position.getRow(), position.getColumn());
     }
 
     public PlayerColor transformColor(Color color){
@@ -42,13 +45,5 @@ public class Transform {
 
     public InitialState transformInitialBoard(Board board){
         return new InitialState(transformBoardSize(board), transformPieces(board.getPieces()), transformColor(board.getTurn()));
-    }
-
-    public Move transformMovement(){
-        return null;
-    }
-
-    public GameOver transformGameOver(Color color){
-        return null;
     }
 }

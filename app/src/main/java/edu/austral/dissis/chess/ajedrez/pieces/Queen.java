@@ -9,7 +9,7 @@ import java.util.List;
 public class Queen implements Piece {
 
     private MyPosition myPosition;
-    private final String name = "Queen";
+    private final String name = "queen";
     private Color color;
     private boolean alive;
     //Sirve como piece id

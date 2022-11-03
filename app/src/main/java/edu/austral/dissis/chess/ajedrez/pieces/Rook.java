@@ -11,7 +11,7 @@ import java.util.List;
 public class Rook implements Piece {
 
     private MyPosition position;
-    private final String name = "Rook";
+    private final String name = "rook";
     private Color color;
     private boolean alive;
     //Sirve como piece id

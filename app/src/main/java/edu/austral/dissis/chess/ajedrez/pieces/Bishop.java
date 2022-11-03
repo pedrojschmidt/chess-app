@@ -9,7 +9,7 @@ import java.util.List;
 public class Bishop implements Piece {
 
     private MyPosition myPosition;
-    private final String name = "Bishop";
+    private final String name = "bishop";
     private Color color;
     private boolean alive;
     //Sirve como piece id

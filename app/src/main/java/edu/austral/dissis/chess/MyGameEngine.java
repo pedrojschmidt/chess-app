@@ -12,10 +12,54 @@ import java.util.List;
 public class MyGameEngine implements GameEngine {
 
     private Transform transform = new Transform();
-    private PlayerColor currentPlayer = PlayerColor.WHITE;
-    private List<MyPosition> positions = fillPositions();
-    private List<Piece> pieces = fillPieces();
-    private List<ChessPiece> chessPieces = transform.transformPieces(pieces);
+    List<MyPosition> positions = fillPositions();
+    List<Piece> pieces = fillPieces();
+    List<ChessPiece> chessPieces = transform.transformPieces(pieces);
+    Board board = new Board(positions, pieces);
+    private PlayerColor currentPlayer = transform.transformColor(board.getTurn());
+
+    @NotNull
+    @Override
+    public InitialState init() {
+        return transform.transformInitialBoard(board);
+    }
+
+    @NotNull
+    @Override
+    public MoveResult applyMove(@NotNull Move move) {
+        Position posFrom = move.getFrom();
+        Position posTo = move.getTo();
+        MyPosition myPosFrom = transform.transformMyPosition(posFrom);
+        MyPosition myPosTo = transform.transformMyPosition(posTo);
+//        ChessPiece fromPiece = pieces.find { it.position == move.from } //devuelve la pieza que cumple la condicion
+//        ChessPiece toPiece = pieces.find { it.position == move.to } //devuelve la pieza que cumple la condicion
+        ChessPiece fromChessPiece = findChessPiece(posFrom);
+        ChessPiece toChessPiece = findChessPiece(posTo);
+        Piece fromPiece = findPiece(myPosFrom);
+        Piece toPiece = findPiece(myPosTo);
+
+        if (fromChessPiece == null) { //chequea que haya una pieza en el lugar que se esta queriendo mover
+            return new InvalidMove("No piece in (${move.from.row}, ${move.from.column})");
+        } else if (fromChessPiece.getColor() != currentPlayer) { //chequea que la pieza que se quiere mover sea del color del jugador que le toca
+            return new InvalidMove("Piece does not belong to current player");
+        } else if (toChessPiece != null && toChessPiece.getColor() == currentPlayer) { //chequea que la posicion final no contenga una pieza del mismo color
+            return new InvalidMove("There is a piece in (${move.to.row}, ${move.to.column})");
+        } else {
+            boolean hasMoved = board.movePiece(fromPiece, myPosTo);
+            if (hasMoved) {
+                chessPieces = transform.transformPieces(board.getPieces());
+                currentPlayer = transform.transformColor(board.getTurn());
+                if (board.isCheckMate()) {
+                    PlayerColor winner = (currentPlayer == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
+                    return new GameOver(winner);
+                }
+            } else {
+                return new InvalidMove("Invalid movement");
+            }
+        }
+        return new NewGameState(chessPieces, currentPlayer);
+//        return null;
+    }
 
     private List<MyPosition> fillPositions(){
         List<MyPosition> positions = new ArrayList<>();
@@ -59,80 +103,21 @@ public class MyGameEngine implements GameEngine {
         return aux;
     }
 
-    @NotNull
-    @Override
-    public InitialState init() {
-        return transform.transformInitialBoard(new Board(positions, pieces));
-    }
-
-    @NotNull
-    @Override
-    public MoveResult applyMove(@NotNull Move move) {
-//        Position posFrom = move.getFrom();
-//        Position posTo = move.getTo();
-////        ChessPiece fromPiece = pieces.find { it.position == move.from } //devuelve la pieza que cumple la condicion
-////        ChessPiece toPiece = pieces.find { it.position == move.to } //devuelve la pieza que cumple la condicion
-//        ChessPiece fromPiece = findPiece(posFrom);
-//        ChessPiece toPiece = findPiece(posTo);
-//
-//        if (fromPiece == null) {
-//            return new InvalidMove("No piece in (${move.from.row}, ${move.from.column})");
-//        } else if (fromPiece.getColor() != currentPlayer) {
-//            return new InvalidMove("Piece does not belong to current player");
-//        } else if (toPiece != null && toPiece.getColor() == currentPlayer) {
-//            return new InvalidMove("There is a piece in (${move.to.row}, ${move.to.column})");
-//        } else {
-//            chessPieces = chessPieces
-//                                    .filter { it != fromPiece && it != toPiece }
-//                                                                                .plus(fromPiece.copy(position = move.to))
-//
-//            currentPlayer = (currentPlayer == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
-//
-//            if (chessPieces.size() == 1) {
-//                return transform.transformGameOver(pieces.get(0).getColor());
-//            }
-//        }
-//
-//        pieces = pieces.map {
-//            if ((it.color == WHITE && it.position.row == 6) || it.color == BLACK && it.position.row == 1)
-//                it.copy(pieceId = "queen")
-//            else
-//                it
-//        }
-//
-//        return NewGameState(pieces, currentPlayer);
+    private Piece findPiece(MyPosition position){
+        for (Piece piece: pieces) {
+            if (piece.getPosition().equals(position)) {
+                return piece;
+            }
+        }
         return null;
     }
 
-    private ChessPiece findPiece(Position position){
+    private ChessPiece findChessPiece(Position position){
         for (ChessPiece chessPiece: chessPieces) {
             if (chessPiece.getPosition().equals(position)) {
                 return chessPiece;
             }
         }
         return null;
-    }
-}
-
-class MovePrinter implements PieceMovedListener {
-    @Override
-    public void onMovePiece(@NotNull Position from, @NotNull Position to) {
-        System.out.print("Move: from ");
-        System.out.print(from);
-        System.out.print(" to ");
-        System.out.println(to);
-    }
-}
-
-class MyChessGameApplication extends AbstractChessGameApplication {
-    @NotNull
-    @Override
-    protected GameEngine getGameEngine() {
-        return new MyGameEngine();
-    }
-    @NotNull
-    @Override
-    protected ImageResolver getImageResolver() {
-        return new CachedImageResolver(new DefaultImageResolver());
     }
 }

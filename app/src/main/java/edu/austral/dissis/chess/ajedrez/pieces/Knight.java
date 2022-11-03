@@ -8,7 +8,7 @@ import java.util.List;
 public class Knight implements Piece {
 
     private MyPosition position;
-    private final String name = "Knight";
+    private final String name = "knight";
     private Color color;
     private boolean alive;
     //Sirve como piece id
