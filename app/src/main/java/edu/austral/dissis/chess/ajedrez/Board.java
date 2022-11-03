@@ -263,6 +263,16 @@ public class Board {
         return occupiedMyPositions;
     }
 
+    public List<Piece> getAlivePieces(){
+        List<Piece> aux = new ArrayList<>();
+        for (Piece piece: pieces) {
+            if (piece.isAlive()) {
+                aux.add(piece);
+            }
+        }
+        return aux;
+    }
+
     public List<Piece> getPieces() {
         return pieces;
     }

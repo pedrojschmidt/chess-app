@@ -85,9 +85,6 @@ public class Knight implements Piece {
                 //de lo contrario se fija: si la posicion está ocupada por una pieza de distinto color puede moverse sino no
                 if (!sameColorPositions.contains(positionAux)) {
                     posiblePositions.add(positionAux);
-                    break;
-                }else{
-                    break;
                 }
             }
         }
