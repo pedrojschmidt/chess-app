@@ -67,10 +67,12 @@ public class Pawn implements Piece {
                 for (Piece piece: otherColorPieces) {
                     MyPosition otherColorMyPosition = piece.getPosition();
                     //si hay una pieza del otro color en esa posicion, la "mata"
-                    if (otherColorMyPosition.equals(myPosition)) {
-                        board.removeOccupiedPosition(otherColorMyPosition);
-                        piece.setAlive(false);
-                        piece.setPosition(null);
+                    if (otherColorMyPosition != null) {
+                        if (otherColorMyPosition.equals(myPosition)) {
+                            board.removeOccupiedPosition(otherColorMyPosition);
+                            piece.setAlive(false);
+                            piece.setPosition(null);
+                        }
                     }
                 }
                 setPosition(myPosition);
@@ -86,10 +88,12 @@ public class Pawn implements Piece {
                 for (Piece piece: otherColorPieces) {
                     MyPosition otherColorMyPosition = piece.getPosition();
                     //si hay una pieza del otro color en esa posicion, la "mata"
-                    if (otherColorMyPosition.equals(myPosition)) {
-                        board.removeOccupiedPosition(otherColorMyPosition);
-                        piece.setAlive(false);
-                        piece.setPosition(null);
+                    if (otherColorMyPosition != null) {
+                        if (otherColorMyPosition.equals(myPosition)) {
+                            board.removeOccupiedPosition(otherColorMyPosition);
+                            piece.setAlive(false);
+                            piece.setPosition(null);
+                        }
                     }
                 }
                 setPosition(myPosition);

@@ -105,8 +105,10 @@ public class MyGameEngine implements GameEngine {
 
     private Piece findPiece(MyPosition position){
         for (Piece piece: pieces) {
-            if (piece.getPosition().equals(position)) {
-                return piece;
+            if (piece.getPosition() != null) {
+                if (piece.getPosition().equals(position)) {
+                    return piece;
+                }
             }
         }
         return null;

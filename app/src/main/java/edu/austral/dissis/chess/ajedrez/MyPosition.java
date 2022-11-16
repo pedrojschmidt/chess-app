@@ -21,8 +21,12 @@ public class MyPosition {
     @Override
     public boolean equals(Object other){
         MyPosition pos = (MyPosition) other;
-        if (pos.getPositionX() == positionX && pos.getPositionY() == positionY){
-            return true;
+        if (pos != null) {
+            if (pos.getPositionX() == positionX && pos.getPositionY() == positionY){
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

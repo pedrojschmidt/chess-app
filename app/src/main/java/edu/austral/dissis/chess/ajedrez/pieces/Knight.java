@@ -34,10 +34,12 @@ public class Knight implements Piece {
             for (Piece piece: otherColorPieces) {
                 MyPosition otherColorPosition = piece.getPosition();
                 //si hay una pieza del otro color en esa posicion, la "mata"
-                if (otherColorPosition.equals(position)) {
-                    board.removeOccupiedPosition(otherColorPosition);
-                    piece.setAlive(false);
-                    piece.setPosition(null);
+                if (otherColorPosition != null) {
+                    if (otherColorPosition.equals(position)) {
+                        board.removeOccupiedPosition(otherColorPosition);
+                        piece.setAlive(false);
+                        piece.setPosition(null);
+                    }
                 }
             }
             setPosition(position);
