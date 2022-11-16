@@ -133,33 +133,50 @@ public class Pawn implements Piece {
                 if (!hasMoved) {
                     if (firstMovement.areFowardWhite(this.myPosition, myPositionAux)) {
                         if (!ocupiedMyPositions.contains(myPositionAux)) {
-                            foward.add(myPositionAux);
+                            if (!otherColorMyPositions.contains(myPositionAux)) {
+                                foward.add(myPositionAux);
+                            }
                         } else {
                             break;
                         }
                     }
                 } else if (anyMovement.areFowardWhite(this.myPosition, myPositionAux)) {
-                    foward.add(myPositionAux);
+                    if (!otherColorMyPositions.contains(myPositionAux)) {
+                        foward.add(myPositionAux);
+                    }
                 }
             } else {
                 if (!hasMoved) {
                     if (firstMovement.areFowardBlack(this.myPosition, myPositionAux)) {
                         if (!ocupiedMyPositions.contains(myPositionAux)) {
-                            foward.add(myPositionAux);
+                            if (!otherColorMyPositions.contains(myPositionAux)) {
+                                foward.add(myPositionAux);
+                            }
                         } else {
                             break;
                         }
                     }
                 } else if (anyMovement.areFowardBlack(this.myPosition, myPositionAux)) {
-                    foward.add(myPositionAux);
+                    if (!otherColorMyPositions.contains(myPositionAux)) {
+                        foward.add(myPositionAux);
+                    }
                 }
             }
         }
         for(MyPosition myPositionAux : posiblePositionsAuxes) {
-            if(killMovement.areFowardDiagonalOne(this.myPosition, myPositionAux)){
-                //chequea que haya una de otro color
-                if (otherColorMyPositions.contains(myPositionAux)) {
-                    fowardDiagonalOne.add(myPositionAux);
+            if (color == Color.WHITE) {
+                if(killMovement.areFowardDiagonalOneWhite(this.myPosition, myPositionAux)){
+                    //chequea que haya una de otro color
+                    if (otherColorMyPositions.contains(myPositionAux)) {
+                        fowardDiagonalOne.add(myPositionAux);
+                    }
+                }
+            } else {
+                if(killMovement.areFowardDiagonalOneBlack(this.myPosition, myPositionAux)){
+                    //chequea que haya una de otro color
+                    if (otherColorMyPositions.contains(myPositionAux)) {
+                        fowardDiagonalOne.add(myPositionAux);
+                    }
                 }
             }
         }
