@@ -60,6 +60,11 @@ public class King implements Piece {
         return aux;
     }
 
+    public void moveCastling(MyPosition myPosition) {
+        hasMoved = true;
+        setPosition(myPosition);
+    }
+
     public boolean checkAvailablePosition (MyPosition myPosition, Board board) {
         List<MyPosition> availableMyPositions = getAvailablePositions(board);
         if (availableMyPositions.contains(myPosition)) {

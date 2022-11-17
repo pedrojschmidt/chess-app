@@ -53,6 +53,11 @@ public class Rook implements Piece {
         return aux;
     }
 
+    public void moveCastling(MyPosition myPosition) {
+        hasMoved = true;
+        setPosition(myPosition);
+    }
+
     public boolean checkAvailablePosition (MyPosition position, Board board) {
         List<MyPosition> availablePositions = getAvailablePositions(board);
         if (availablePositions.contains(position)) {
