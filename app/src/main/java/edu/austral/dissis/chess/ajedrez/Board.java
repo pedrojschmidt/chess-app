@@ -292,8 +292,10 @@ public class Board {
 
     public Piece getPieceByPosition(MyPosition myPosition){
         for(Piece piece: pieces){
-            if (piece.getPosition().getPositionX() == myPosition.getPositionX() && piece.getPosition().getPositionY() == myPosition.getPositionY()) {
-                return piece;
+            if (piece.getPosition() != null) {
+                if (piece.getPosition().getPositionX() == myPosition.getPositionX() && piece.getPosition().getPositionY() == myPosition.getPositionY()) {
+                    return piece;
+                }
             }
         }
         return null;
