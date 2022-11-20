@@ -84,58 +84,68 @@ public class Board {
     }
 
     public boolean movePiece(Piece piece, MyPosition myPosition) {
-        if (piece != null) {
-            MyPosition posAux = piece.getPosition();
-            //chequeo que la posicion exista y no sea la misma, y que el color de la pieza sea el mismo que el turno
-            if (myPositions.contains(myPosition) && !posAux.equals(myPosition) && piece.getColor() == turn) {
-                boolean isCastling = false;
-                //castling
-                if (piece.getClass() == King.class) {
-                    if (myPosition.equals(myPositions.get(16))) { // 3,1
-                        Piece suposedRook = getPieceByPosition(myPositions.get(0)); // 1,1
-                        if (suposedRook.getClass() == Rook.class) {
-                            castling((King) piece, (Rook) suposedRook);
-                            isCastling = true;
-                        }
-                    } else if (myPosition.equals(myPositions.get(23))) { // 3,8
-                        Piece suposedRook = getPieceByPosition(myPositions.get(7)); // 1,8
-                        if (suposedRook.getClass() == Rook.class) {
-                            castling((King) piece, (Rook) suposedRook);
-                            isCastling = true;
-                        }
-                    } else if (myPosition.equals(myPositions.get(48))) { // 7,1
-                        Piece suposedRook = getPieceByPosition(myPositions.get(56)); // 8,1
-                        if (suposedRook.getClass() == Rook.class) {
-                            castling((King) piece, (Rook) suposedRook);
-                            isCastling = true;
-                        }
-                    } else if (myPosition.equals(myPositions.get(55))) { // 7,8
-                        Piece suposedRook = getPieceByPosition(myPositions.get(63)); // 8,8
-                        if (suposedRook.getClass() == Rook.class) {
-                            castling((King) piece, (Rook) suposedRook);
-                            isCastling = true;
-                        }
-                    }
+        isCheckMate();
+        if (!isOver) {
+            if (piece != null) {
+                if (isCheck()) {
+                    return moveAux(piece, myPosition);
                 }
-                if (!isCastling) {
-                    boolean aux = piece.move(myPosition, this);
-                    if (aux) {
-                        manageEmptyAndOccupiedListsRemove(posAux);
-                        manageEmptyAndOccupiedListsAdd(myPosition);
-                        if (turn == Color.BLACK) {
-                            turn = Color.WHITE;
-                        } else {
-                            turn = Color.BLACK;
-                        }
-                    }
-                    return aux;
-                }
-                return isCastling;
+                return false;
             }
             return false;
-        } else {
-            return false;
         }
+        return false;
+    }
+
+    private boolean moveAux(Piece piece, MyPosition myPosition){
+        MyPosition posAux = piece.getPosition();
+        //chequeo que la posicion exista y no sea la misma, y que el color de la pieza sea el mismo que el turno
+        if (myPositions.contains(myPosition) && !posAux.equals(myPosition) && piece.getColor() == turn) {
+            boolean isCastling = false;
+            //castling
+            if (piece.getClass() == King.class) {
+                if (myPosition.equals(myPositions.get(16))) { // 3,1
+                    Piece suposedRook = getPieceByPosition(myPositions.get(0)); // 1,1
+                    if (suposedRook.getClass() == Rook.class) {
+                        castling((King) piece, (Rook) suposedRook);
+                        isCastling = true;
+                    }
+                } else if (myPosition.equals(myPositions.get(23))) { // 3,8
+                    Piece suposedRook = getPieceByPosition(myPositions.get(7)); // 1,8
+                    if (suposedRook.getClass() == Rook.class) {
+                        castling((King) piece, (Rook) suposedRook);
+                        isCastling = true;
+                    }
+                } else if (myPosition.equals(myPositions.get(48))) { // 7,1
+                    Piece suposedRook = getPieceByPosition(myPositions.get(56)); // 8,1
+                    if (suposedRook.getClass() == Rook.class) {
+                        castling((King) piece, (Rook) suposedRook);
+                        isCastling = true;
+                    }
+                } else if (myPosition.equals(myPositions.get(55))) { // 7,8
+                    Piece suposedRook = getPieceByPosition(myPositions.get(63)); // 8,8
+                    if (suposedRook.getClass() == Rook.class) {
+                        castling((King) piece, (Rook) suposedRook);
+                        isCastling = true;
+                    }
+                }
+            }
+            if (!isCastling) {
+                boolean aux = piece.move(myPosition, this);
+                if (aux) {
+                    manageEmptyAndOccupiedListsRemove(posAux);
+                    manageEmptyAndOccupiedListsAdd(myPosition);
+                    if (turn == Color.BLACK) {
+                        turn = Color.WHITE;
+                    } else {
+                        turn = Color.BLACK;
+                    }
+                }
+                return aux;
+            }
+            return isCastling;
+        }
+        return false;
     }
 
     public void removeOccupiedPosition(MyPosition myPosition){
