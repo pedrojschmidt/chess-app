@@ -89,14 +89,20 @@ public class King implements Piece {
     }
 
     private boolean removesCheck(MyPosition availableMyPosition, Board board){
-        MyPosition originalPosition = myPosition;
+        MyPosition originalPosition = getPosition();
         myPosition = availableMyPosition;
+        board.manageEmptyAndOccupiedListsRemove(originalPosition);
+        board.manageEmptyAndOccupiedListsAdd(availableMyPosition);
         //capaz tengo que hacer algo más acá (depende de como haga el isCheck())
         if (board.isCheck()) {
             myPosition = originalPosition;
+            board.manageEmptyAndOccupiedListsRemove(availableMyPosition);
+            board.manageEmptyAndOccupiedListsAdd(originalPosition);
             return false;
         } else {
             myPosition = originalPosition;
+            board.manageEmptyAndOccupiedListsRemove(availableMyPosition);
+            board.manageEmptyAndOccupiedListsAdd(originalPosition);
             return true;
         }
     }
