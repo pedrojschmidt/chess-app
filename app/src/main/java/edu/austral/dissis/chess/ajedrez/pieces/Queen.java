@@ -66,6 +66,7 @@ public class Queen implements Piece {
         return false;
     }
 
+    @Override
     public List<MyPosition> getAvailablePositionsInCheck(Board board, List<MyPosition> availableMyPositions) {
         List<MyPosition> posiblePositions = new ArrayList<>();
         for (MyPosition availableMyPosition: availableMyPositions) {

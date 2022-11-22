@@ -66,10 +66,21 @@ public class Board {
     }
 
     public boolean isCheckMate(){
-        boolean aux = false;
-
-        isOver = aux;
-        return aux;
+        List<Piece> actualTurnPieces = null;
+        if (turn == Color.BLACK) {
+            actualTurnPieces = getPiecesByColor(Color.BLACK);
+        } else {
+            actualTurnPieces = getPiecesByColor(Color.WHITE);
+        }
+        if (isCheck()) {
+            for (Piece actualTurnPiece: actualTurnPieces) {
+                if (actualTurnPiece.getAvailablePositionsInCheck(this, actualTurnPiece.getAvailablePositions(this)).size() == 0) {
+                    isOver = true;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean isCheck(){
