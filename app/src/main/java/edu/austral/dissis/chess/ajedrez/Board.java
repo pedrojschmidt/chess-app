@@ -73,10 +73,45 @@ public class Board {
     }
 
     public boolean isCheck(){
+        //Tengo que chequear si alguna de las piezas del jugador, que no tiene el turno, ataca directamente al rey del otro
         boolean aux = false;
-
-        isOver = aux;
+        if (turn == Color.BLACK) {
+            MyPosition blackKingPos = getKing(Color.BLACK).getPosition();
+            List<Piece> colorPieces = getPiecesByColor(Color.WHITE);
+            for (Piece colorPiece: colorPieces) {
+                if (pieceAtacksKing(colorPiece, blackKingPos)) {
+                    aux = true;
+                }
+            }
+        } else {
+            MyPosition whiteKingPos = getKing(Color.WHITE).getPosition();
+            List<Piece> colorPieces = getPiecesByColor(Color.BLACK);
+            for (Piece colorPiece: colorPieces) {
+                if (pieceAtacksKing(colorPiece, whiteKingPos)) {
+                    aux = true;
+                }
+            }
+        }
         return aux;
+    }
+
+    public boolean pieceAtacksKing(Piece colorPiece, MyPosition kingPos){
+        if (colorPiece.getPosition() != null) {
+            List<MyPosition> colorPiecePosiblePositions = colorPiece.getAvailablePositions(this);
+            return colorPiecePosiblePositions.contains(kingPos);
+        }
+        return false;
+    }
+
+    public King getKing(Color color){
+        List<Piece> colorPieces = getPiecesByColor(color);
+        King colorKing = null;
+        for (Piece colorPiece: colorPieces) {
+            if (colorPiece.getClass() == King.class) {
+                colorKing = (King) colorPiece;
+            }
+        }
+        return colorKing;
     }
 
     public boolean positionExists(MyPosition myPosition){
@@ -87,12 +122,31 @@ public class Board {
         isCheckMate();
         if (!isOver) {
             if (piece != null) {
-                if (isCheck()) {
+                if (!isCheck()) {
                     return moveAux(piece, myPosition);
+                } else {
+                    return moveInCheck(piece, myPosition);
                 }
-                return false;
             }
             return false;
+        }
+        return false;
+    }
+
+    private boolean moveInCheck(Piece piece, MyPosition myPosition){
+        MyPosition posAux = piece.getPosition();
+        if (myPositions.contains(myPosition) && !posAux.equals(myPosition) && piece.getColor() == turn) {
+            boolean aux = piece.moveInCheck(myPosition, this);
+            if (aux) {
+                manageEmptyAndOccupiedListsRemove(posAux);
+                manageEmptyAndOccupiedListsAdd(myPosition);
+                if (turn == Color.BLACK) {
+                    turn = Color.WHITE;
+                } else {
+                    turn = Color.BLACK;
+                }
+            }
+            return aux;
         }
         return false;
     }

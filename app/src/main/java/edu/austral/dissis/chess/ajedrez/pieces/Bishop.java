@@ -28,12 +28,21 @@ public class Bishop implements Piece {
     public boolean move(MyPosition myPosition, Board board) {
         boolean aux = checkAvailablePosition(myPosition, board);
         //chequea que la posicion essté disponible
+        return moveAux(myPosition, board, aux);
+    }
+
+    @Override
+    public boolean moveInCheck(MyPosition myPosition, Board board) {
+        boolean aux = checkAvailablePositionInCheck(myPosition, board);
+        return moveAux(myPosition, board, aux);
+    }
+
+    private boolean moveAux(MyPosition myPosition, Board board, boolean aux) {
         if (aux) {
             List<Piece> sameColorPieces = board.getPiecesByColor(color);
             List<Piece> otherColorPieces = getOtherColorPieces(sameColorPieces, board);
             for (Piece piece: otherColorPieces) {
                 MyPosition otherColorMyPosition = piece.getPosition();
-                //si hay una pieza del otro color en esa posicion, la "mata"
                 if (otherColorMyPosition != null) {
                     if (otherColorMyPosition.equals(myPosition)) {
                         board.removeOccupiedPosition(otherColorMyPosition);
@@ -47,12 +56,44 @@ public class Bishop implements Piece {
         return aux;
     }
 
+    public boolean checkAvailablePositionInCheck (MyPosition myPosition, Board board) {
+        List<MyPosition> availableMyPositions = getAvailablePositions(board);
+        List<MyPosition> availableMyPositionsInCheck = getAvailablePositionsInCheck(board, availableMyPositions);
+        if (availableMyPositionsInCheck.contains(myPosition)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkAvailablePosition (MyPosition myPosition, Board board) {
         List<MyPosition> availableMyPositions = getAvailablePositions(board);
         if (availableMyPositions.contains(myPosition)) {
             return true;
         }
         return false;
+    }
+
+    public List<MyPosition> getAvailablePositionsInCheck(Board board, List<MyPosition> availableMyPositions) {
+        List<MyPosition> posiblePositions = new ArrayList<>();
+        for (MyPosition availableMyPosition: availableMyPositions) {
+            if (removesCheck(availableMyPosition, board)) {
+                posiblePositions.add(availableMyPosition);
+            }
+        }
+        return posiblePositions;
+    }
+
+    private boolean removesCheck(MyPosition availableMyPosition, Board board){
+        MyPosition originalPosition = myPosition;
+        myPosition = availableMyPosition;
+        //capaz tengo que hacer algo más acá (depende de como haga el isCheck())
+        if (board.isCheck()) {
+            myPosition = originalPosition;
+            return false;
+        } else {
+            myPosition = originalPosition;
+            return true;
+        }
     }
 
     // devuelve todas las posiciones a las que se puede mover teniendo en cuenta su tipo de movimiento

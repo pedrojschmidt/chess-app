@@ -62,47 +62,82 @@ public class Pawn implements Piece {
             boolean aux = checkAvailablePositionAsQueen(myPosition, board);
             //chequea que la posicion essté disponible
             if (aux) {
-                List<Piece> sameColorPieces = board.getPiecesByColor(color);
-                List<Piece> otherColorPieces = getOtherColorPieces(sameColorPieces, board);
-                for (Piece piece: otherColorPieces) {
-                    MyPosition otherColorMyPosition = piece.getPosition();
-                    //si hay una pieza del otro color en esa posicion, la "mata"
-                    if (otherColorMyPosition != null) {
-                        if (otherColorMyPosition.equals(myPosition)) {
-                            board.removeOccupiedPosition(otherColorMyPosition);
-                            piece.setAlive(false);
-                            piece.setPosition(null);
-                        }
-                    }
-                }
-                setPosition(myPosition);
+                moveAux(myPosition, board);
             }
             return aux;
         } else {
             boolean aux = checkAvailablePosition(myPosition, board);
-            //chequea que la posicion essté disponible
             if (aux) {
                 hasMoved = true;
-                List<Piece> sameColorPieces = board.getPiecesByColor(color);
-                List<Piece> otherColorPieces = getOtherColorPieces(sameColorPieces, board);
-                for (Piece piece: otherColorPieces) {
-                    MyPosition otherColorMyPosition = piece.getPosition();
-                    //si hay una pieza del otro color en esa posicion, la "mata"
-                    if (otherColorMyPosition != null) {
-                        if (otherColorMyPosition.equals(myPosition)) {
-                            board.removeOccupiedPosition(otherColorMyPosition);
-                            piece.setAlive(false);
-                            piece.setPosition(null);
-                        }
-                    }
-                }
-                setPosition(myPosition);
+                moveAux(myPosition, board);
                 if (myPosition.getPositionY() == 8) {
                     setQueen(true);
                     setName("queen");
                 }
             }
             return aux;
+        }
+    }
+
+    @Override
+    public boolean moveInCheck(MyPosition myPosition, Board board) {
+        boolean aux = checkAvailablePositionInCheck(myPosition, board);
+        if (aux) {
+            hasMoved = true;
+            moveAux(myPosition, board);
+            if (myPosition.getPositionY() == 8) {
+                setQueen(true);
+                setName("queen");
+            }
+        }
+        return aux;
+    }
+
+    private void moveAux(MyPosition myPosition, Board board) {
+        List<Piece> sameColorPieces = board.getPiecesByColor(color);
+        List<Piece> otherColorPieces = getOtherColorPieces(sameColorPieces, board);
+        for (Piece piece: otherColorPieces) {
+            MyPosition otherColorMyPosition = piece.getPosition();
+            if (otherColorMyPosition != null) {
+                if (otherColorMyPosition.equals(myPosition)) {
+                    board.removeOccupiedPosition(otherColorMyPosition);
+                    piece.setAlive(false);
+                    piece.setPosition(null);
+                }
+            }
+        }
+        setPosition(myPosition);
+    }
+
+    public boolean checkAvailablePositionInCheck (MyPosition myPosition, Board board) {
+        List<MyPosition> availableMyPositions = getAvailablePositions(board);
+        List<MyPosition> availableMyPositionsInCheck = getAvailablePositionsInCheck(board, availableMyPositions);
+        if (availableMyPositionsInCheck.contains(myPosition)) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<MyPosition> getAvailablePositionsInCheck(Board board, List<MyPosition> availableMyPositions) {
+        List<MyPosition> posiblePositions = new ArrayList<>();
+        for (MyPosition availableMyPosition: availableMyPositions) {
+            if (removesCheck(availableMyPosition, board)) {
+                posiblePositions.add(availableMyPosition);
+            }
+        }
+        return posiblePositions;
+    }
+
+    private boolean removesCheck(MyPosition availableMyPosition, Board board){
+        MyPosition originalPosition = getPosition();
+        myPosition = availableMyPosition;
+        //capaz tengo que hacer algo más acá (depende de como haga el isCheck())
+        if (board.isCheck()) {
+            myPosition = originalPosition;
+            return false;
+        } else {
+            myPosition = originalPosition;
+            return true;
         }
     }
 

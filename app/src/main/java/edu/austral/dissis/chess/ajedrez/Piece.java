@@ -8,6 +8,7 @@ public interface Piece {
     public boolean isAlive();
     public List<MyPosition> fillSameColorPositions(List<Piece> sameColorPieces);
     public boolean containsPiece(List<Piece> pieces, Piece piece);
+    public boolean moveInCheck(MyPosition myPosition, Board board);
 
     public List<MyPosition> getAvailablePositions(Board board);
     public MyPosition getPosition();
