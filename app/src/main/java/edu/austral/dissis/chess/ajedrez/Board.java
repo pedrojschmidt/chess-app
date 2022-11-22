@@ -74,11 +74,14 @@ public class Board {
         }
         if (isCheck()) {
             for (Piece actualTurnPiece: actualTurnPieces) {
-                if (actualTurnPiece.getAvailablePositionsInCheck(this, actualTurnPiece.getAvailablePositions(this)).size() == 0) {
-                    isOver = true;
-                    return true;
+                if (actualTurnPiece.getPosition() != null) {
+                    if (actualTurnPiece.getAvailablePositionsInCheck(this, actualTurnPiece.getAvailablePositions(this)).size() != 0) {
+                        return false;
+                    }
                 }
             }
+            isOver = true;
+            return true;
         }
         return false;
     }
