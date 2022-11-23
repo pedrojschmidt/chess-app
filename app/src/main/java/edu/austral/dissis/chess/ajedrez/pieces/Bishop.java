@@ -67,10 +67,41 @@ public class Bishop implements Piece {
 
     public boolean checkAvailablePosition (MyPosition myPosition, Board board) {
         List<MyPosition> availableMyPositions = getAvailablePositions(board);
-        if (availableMyPositions.contains(myPosition)) {
+        List<MyPosition> availableMyPositionsConsideringCheck = getAvailablePositionsConsideringCheck(board, availableMyPositions);
+        if (availableMyPositionsConsideringCheck.contains(myPosition)) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<MyPosition> getAvailablePositionsConsideringCheck(Board board, List<MyPosition> availableMyPositions) {
+        List<MyPosition> posiblePositions = new ArrayList<>();
+        for (MyPosition availableMyPosition: availableMyPositions) {
+            if (!putsInCheck(availableMyPosition, board)) {
+                posiblePositions.add(availableMyPosition);
+            }
+        }
+        return posiblePositions;
+    }
+
+    private boolean putsInCheck(MyPosition availableMyPosition, Board board){
+        MyPosition originalPosition = getPosition();
+        myPosition = availableMyPosition;
+        board.manageEmptyAndOccupiedListsRemove(originalPosition);
+        board.manageEmptyAndOccupiedListsAdd(availableMyPosition);
+        //capaz tengo que hacer algo más acá (depende de como haga el isCheck())
+        if (board.isCheck()) {
+            myPosition = originalPosition;
+            board.manageEmptyAndOccupiedListsRemove(availableMyPosition);
+            board.manageEmptyAndOccupiedListsAdd(originalPosition);
+            return true;
+        } else {
+            myPosition = originalPosition;
+            board.manageEmptyAndOccupiedListsRemove(availableMyPosition);
+            board.manageEmptyAndOccupiedListsAdd(originalPosition);
+            return false;
+        }
     }
 
     @Override

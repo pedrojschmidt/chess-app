@@ -11,6 +11,7 @@ public interface Piece {
     public boolean moveInCheck(MyPosition myPosition, Board board);
 
     public List<MyPosition> getAvailablePositions(Board board);
+    public List<MyPosition> getAvailablePositionsConsideringCheck(Board board, List<MyPosition> availableMyPositions);
     public List<MyPosition> getAvailablePositionsInCheck(Board board, List<MyPosition> availableMyPositions);
     public MyPosition getPosition();
     public Color getColor();
