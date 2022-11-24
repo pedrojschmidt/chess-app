@@ -16,6 +16,7 @@ public class Board {
     private int xSize;
     private int ySize;
     private Color turn;
+    private int turnsAmount;
 
     public Board(List<MyPosition> myPositions, List<Piece> pieces) {
         this.myPositions = myPositions;
@@ -26,6 +27,7 @@ public class Board {
         ySize = checkYSize();
         turn = Color.WHITE;
         this.players = fillPlayers();
+        turnsAmount = 0;
     }
 
     private List<Player> fillPlayers(){
@@ -132,9 +134,17 @@ public class Board {
         return myPositions.contains(myPosition);
     }
 
+    public boolean isOverByTurns(){
+        return turnsAmount > 30;
+    }
+
+    public boolean isOver(){
+        return isCheckMate();
+//        return isOverByTurns();
+    }
+
     public boolean movePiece(Piece piece, MyPosition myPosition) {
-        isCheckMate();
-        if (!isOver) {
+        if (!isOver()) {
             if (piece != null) {
                 if (!isCheck()) {
                     return moveAux(piece, myPosition);
@@ -159,6 +169,7 @@ public class Board {
                 } else {
                     turn = Color.BLACK;
                 }
+                turnsAmount += 1;
             }
             return aux;
         }
@@ -208,6 +219,7 @@ public class Board {
                     } else {
                         turn = Color.BLACK;
                     }
+                    turnsAmount += 1;
                 }
                 return aux;
             }

@@ -58,7 +58,7 @@ public class MyGameEngine implements GameEngine {
             if (hasMoved) {
                 chessPieces = transform.transformPieces(board.getAlivePieces());
                 currentPlayer = transform.transformColor(board.getTurn());
-                if (board.isCheckMate()) {
+                if (board.isOver()) {
                     PlayerColor winner = (currentPlayer == PlayerColor.BLACK) ? PlayerColor.WHITE : PlayerColor.BLACK;
                     return new GameOver(winner);
                 }
