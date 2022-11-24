@@ -2,6 +2,7 @@ package edu.austral.dissis.chess.ajedrez.pieces;
 
 import edu.austral.dissis.chess.ajedrez.*;
 import edu.austral.dissis.chess.ajedrez.movements.DiagonalMovement;
+import edu.austral.dissis.chess.ajedrez.movements.JumpMovement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,12 +17,14 @@ public class Archbishop implements Piece {
     //Sirve como piece id
     private final MyPosition initialMyPosition;
     private DiagonalMovement movement;
+    private JumpMovement movement2;
 
-    public Archbishop(MyPosition initialMyPosition, Color color, boolean alive, DiagonalMovement movement) {
+    public Archbishop(MyPosition initialMyPosition, Color color, boolean alive, DiagonalMovement movement, JumpMovement movement2) {
         this.myPosition = initialMyPosition;
         this.color = color;
         this.alive = alive;
         this.movement = movement;
+        this.movement2 = movement2;
         this.initialMyPosition = initialMyPosition;
     }
 
@@ -166,6 +169,15 @@ public class Archbishop implements Piece {
         Collections.reverse(diagonalUpLeft);
         Collections.reverse(diagonalDownLeft);
 
+        List<MyPosition> crossUp = new ArrayList<>();
+
+        //llena las listas de las 4 rectas. FUNCIONA
+        for(MyPosition positionAux: posiblePositionsAuxes){
+            if(movement2.areJump(this.myPosition, positionAux)){
+                crossUp.add(positionAux);
+            }
+        }
+
         List<MyPosition> posibleMyPositions = new ArrayList<>();
 
         //FUNCIONA
@@ -216,6 +228,17 @@ public class Archbishop implements Piece {
                     break;
                 }else{
                     break;
+                }
+            }
+        }
+        for(MyPosition positionAux: crossUp){
+            //si la posicion no está ocupada la agrega a posibles posiciones
+            if(!ocupiedMyPositions.contains(positionAux)){
+                posibleMyPositions.add(positionAux);
+            }else{
+                //de lo contrario se fija: si la posicion está ocupada por una pieza de distinto color puede moverse sino no
+                if (!sameColorMyPositions.contains(positionAux)) {
+                    posibleMyPositions.add(positionAux);
                 }
             }
         }

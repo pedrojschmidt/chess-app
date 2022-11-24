@@ -85,12 +85,12 @@ public class Game {
 
         aux.add(new Rook(new MyPosition(1,1), Color.WHITE, true, new CrossMovement(7)));
         aux.add(new Knight(new MyPosition(2,1), Color.WHITE, true, new JumpMovement(1, 2)));
-        aux.add(new Bishop(new MyPosition(3,1), Color.WHITE, true, new DiagonalMovement(7)));
+        aux.add(new Archbishop(new MyPosition(3,1), Color.WHITE, true, new DiagonalMovement(7), new JumpMovement(1, 2)));
         aux.add(new Bishop(new MyPosition(4,1), Color.WHITE, true, new DiagonalMovement(7)));
         aux.add(new Queen(new MyPosition(5,1), Color.WHITE, true, new AllWayMovement(7)));
         aux.add(new King(new MyPosition(6,1), Color.WHITE, true, new KingMovement(1)));
         aux.add(new Bishop(new MyPosition(7,1), Color.WHITE, true, new DiagonalMovement(7)));
-        aux.add(new Bishop(new MyPosition(8,1), Color.WHITE, true, new DiagonalMovement(7)));
+        aux.add(new Archbishop(new MyPosition(8,1), Color.WHITE, true, new DiagonalMovement(7), new JumpMovement(1, 2)));
         aux.add(new Knight(new MyPosition(9,1), Color.WHITE, true, new JumpMovement(1, 2)));
         aux.add(new Rook(new MyPosition(10,1), Color.WHITE, true, new CrossMovement(7)));
 
@@ -100,12 +100,12 @@ public class Game {
 
         aux.add(new Rook(new MyPosition(1,8), Color.BLACK, true, new CrossMovement(7)));
         aux.add(new Knight(new MyPosition(2,8), Color.BLACK, true, new JumpMovement(1, 2)));
-        aux.add(new Bishop(new MyPosition(3,8), Color.WHITE, true, new DiagonalMovement(7)));
+        aux.add(new Archbishop(new MyPosition(3,8), Color.BLACK, true, new DiagonalMovement(7), new JumpMovement(1, 2)));
         aux.add(new Bishop(new MyPosition(4,8), Color.BLACK, true, new DiagonalMovement(7)));
         aux.add(new Queen(new MyPosition(5,8), Color.BLACK, true, new AllWayMovement(7)));
         aux.add(new King(new MyPosition(6,8), Color.BLACK, true, new KingMovement(1)));
         aux.add(new Bishop(new MyPosition(7,8), Color.BLACK, true, new DiagonalMovement(7)));
-        aux.add(new Bishop(new MyPosition(8,8), Color.WHITE, true, new DiagonalMovement(7)));
+        aux.add(new Archbishop(new MyPosition(8,8), Color.BLACK, true, new DiagonalMovement(7), new JumpMovement(1, 2)));
         aux.add(new Knight(new MyPosition(9,8), Color.BLACK, true, new JumpMovement(1, 2)));
         aux.add(new Rook(new MyPosition(10,8), Color.BLACK, true, new CrossMovement(7)));
 
