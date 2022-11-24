@@ -43,7 +43,4 @@ public class Transform {
         return new BoardSize(board.getxSize(), board.getySize());
     }
 
-    public InitialState transformInitialBoard(Board board){
-        return new InitialState(transformBoardSize(board), transformPieces(board.getPieces()), transformColor(board.getTurn()));
-    }
 }

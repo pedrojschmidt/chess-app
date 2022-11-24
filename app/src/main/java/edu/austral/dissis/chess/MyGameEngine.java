@@ -12,16 +12,25 @@ import java.util.List;
 public class MyGameEngine implements GameEngine {
 
     private Transform transform = new Transform();
-    List<MyPosition> positions = fillPositions();
-    List<Piece> pieces = fillPieces();
-    List<ChessPiece> chessPieces = transform.transformPieces(pieces);
-    Board board = new Board(positions, pieces);
-    private PlayerColor currentPlayer = transform.transformColor(board.getTurn());
+    private Game game = new Game();
+    List<MyPosition> positions = null;
+    List<Piece> pieces = null;
+    List<ChessPiece> chessPieces = null;
+    Board board = null;
+    private PlayerColor currentPlayer = null;
 
     @NotNull
     @Override
     public InitialState init() {
-        return transform.transformInitialBoard(board);
+//        game.setClassicGame();
+        game.setGame2();
+//        game.setGame3();
+        positions = game.getPositions();
+        pieces = game.getPieces();
+        chessPieces = game.getChessPieces();
+        board = game.getBoard();
+        currentPlayer = transform.transformColor(board.getTurn());
+        return new InitialState(transform.transformBoardSize(board), transform.transformPieces(board.getPieces()), transform.transformColor(board.getTurn()));
     }
 
     @NotNull
@@ -59,48 +68,6 @@ public class MyGameEngine implements GameEngine {
         }
         return new NewGameState(chessPieces, currentPlayer);
 //        return null;
-    }
-
-    private List<MyPosition> fillPositions(){
-        List<MyPosition> positions = new ArrayList<>();
-        for (int i = 1; i < 9; i++) {
-            for (int j = 1; j < 9; j++) {
-                positions.add(new MyPosition(i, j));
-            }
-        }
-        return positions;
-    }
-
-    public List<Piece> fillPieces(){
-        List<Piece> aux = new ArrayList<>();
-
-        aux.add(new Rook(positions.get(0), Color.WHITE, true, new CrossMovement(7)));
-        aux.add(new Knight(positions.get(8), Color.WHITE, true, new JumpMovement(1, 2)));
-        aux.add(new Bishop(positions.get(16), Color.WHITE, true, new DiagonalMovement(7)));
-        aux.add(new Queen(positions.get(24), Color.WHITE, true, new AllWayMovement(7)));
-        aux.add(new King(positions.get(32), Color.WHITE, true, new KingMovement(1)));
-        aux.add(new Bishop(positions.get(40), Color.WHITE, true, new DiagonalMovement(7)));
-        aux.add(new Knight(positions.get(48), Color.WHITE, true, new JumpMovement(1, 2)));
-        aux.add(new Rook(positions.get(56), Color.WHITE, true, new CrossMovement(7)));
-
-        for (int i = 1; i < 9; i++) {
-            aux.add(new Pawn(new MyPosition(i,2), Color.WHITE, true, new FowardMovement(2), new FowardMovement(1), new PawnEatMovement(1)));
-        }
-
-        aux.add(new Rook(positions.get(7), Color.BLACK, true, new CrossMovement(7)));
-        aux.add(new Knight(positions.get(15), Color.BLACK, true, new JumpMovement(1, 2)));
-        aux.add(new Bishop(positions.get(23), Color.BLACK, true, new DiagonalMovement(7)));
-        aux.add(new Queen(positions.get(31), Color.BLACK, true, new AllWayMovement(7)));
-        aux.add(new King(positions.get(39), Color.BLACK, true, new KingMovement(1)));
-        aux.add(new Bishop(positions.get(47), Color.BLACK, true, new DiagonalMovement(7)));
-        aux.add(new Knight(positions.get(55), Color.BLACK, true, new JumpMovement(1, 2)));
-        aux.add(new Rook(positions.get(63), Color.BLACK, true, new CrossMovement(7)));
-
-        for (int i = 1; i < 9; i++) {
-            aux.add(new Pawn(new MyPosition(i,7), Color.BLACK, true, new FowardMovement(2), new FowardMovement(1), new PawnEatMovement(1)));
-        }
-
-        return aux;
     }
 
     private Piece findPiece(MyPosition position){
